@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import { env } from "@/lib/env";
 import "./globals.css";
 
+export const metadata = {
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+};
+
 export const metadata: Metadata = {
   title: env.siteName,
   description:
