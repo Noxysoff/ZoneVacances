@@ -14,17 +14,37 @@ function readRequiredEnvValue(key: string) {
 }
 
 export const env = {
-  belgiumAddressApiBaseUrl: readRequiredEnvValue("BELGIUM_ADDRESS_API_BASE_URL"),
-  belgiumAddressApiSourceUrl: readRequiredEnvValue("BELGIUM_ADDRESS_API_SOURCE_URL"),
-  francePublicHolidaysBaseUrl: readRequiredEnvValue("FRANCE_PUBLIC_HOLIDAYS_BASE_URL"),
-  franceSchoolCalendarIcsBaseUrl: readRequiredEnvValue(
-    "FRANCE_SCHOOL_CALENDAR_ICS_BASE_URL",
-  ),
-  franceSchoolCalendarSourceUrl: readRequiredEnvValue("FRANCE_SCHOOL_CALENDAR_SOURCE_URL"),
-  francePublicHolidaysSourceUrl: readRequiredEnvValue("FRANCE_PUBLIC_HOLIDAYS_SOURCE_URL"),
-  geoApiBaseUrl: readRequiredEnvValue("GEO_API_BASE_URL"),
-  geoApiSourceUrl: readRequiredEnvValue("GEO_API_SOURCE_URL"),
-  openHolidaysBaseUrl: readRequiredEnvValue("OPEN_HOLIDAYS_BASE_URL"),
-  openHolidaysSourceUrl: readRequiredEnvValue("OPEN_HOLIDAYS_SOURCE_URL"),
-  siteName: readOptionalEnvValue("NEXT_PUBLIC_SITE_NAME", "ZoneVacances"),
+  get belgiumAddressApiBaseUrl() {
+    return readRequiredEnvValue("BELGIUM_ADDRESS_API_BASE_URL");
+  },
+  get belgiumAddressApiSourceUrl() {
+    return readRequiredEnvValue("BELGIUM_ADDRESS_API_SOURCE_URL");
+  },
+  get francePublicHolidaysBaseUrl() {
+    return readRequiredEnvValue("FRANCE_PUBLIC_HOLIDAYS_BASE_URL");
+  },
+  get franceSchoolCalendarIcsBaseUrl() {
+    return readRequiredEnvValue("FRANCE_SCHOOL_CALENDAR_ICS_BASE_URL");
+  },
+  get franceSchoolCalendarSourceUrl() {
+    return readRequiredEnvValue("FRANCE_SCHOOL_CALENDAR_SOURCE_URL");
+  },
+  get francePublicHolidaysSourceUrl() {
+    return readRequiredEnvValue("FRANCE_PUBLIC_HOLIDAYS_SOURCE_URL");
+  },
+  get geoApiBaseUrl() {
+    return readRequiredEnvValue("GEO_API_BASE_URL");
+  },
+  get geoApiSourceUrl() {
+    return readRequiredEnvValue("GEO_API_SOURCE_URL");
+  },
+  get openHolidaysBaseUrl() {
+    return readRequiredEnvValue("OPEN_HOLIDAYS_BASE_URL");
+  },
+  get openHolidaysSourceUrl() {
+    return readRequiredEnvValue("OPEN_HOLIDAYS_SOURCE_URL");
+  },
+  get siteName() {
+    return readOptionalEnvValue("NEXT_PUBLIC_SITE_NAME", "ZoneVacances");
+  },
 } as const;

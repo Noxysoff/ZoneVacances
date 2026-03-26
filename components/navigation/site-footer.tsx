@@ -20,29 +20,6 @@ type SiteFooterProps = {
   locale: AppLocale;
 };
 
-const API_LINKS = [
-  {
-    href: env.belgiumAddressApiSourceUrl,
-    label: "BeST Address API",
-  },
-  {
-    href: env.franceSchoolCalendarSourceUrl,
-    label: "Education France",
-  },
-  {
-    href: env.francePublicHolidaysSourceUrl,
-    label: "Calendrier API Gouv",
-  },
-  {
-    href: env.openHolidaysSourceUrl,
-    label: "OpenHolidays API",
-  },
-  {
-    href: env.geoApiSourceUrl,
-    label: "API Geo",
-  },
-];
-
 const RESOURCE_LINKS = [
   {
     id: "code",
@@ -58,6 +35,28 @@ export function SiteFooter({ labels, locale }: SiteFooterProps) {
   const homeHref = `/${locale}/home` as Route;
   const legalHref = `/${locale}/legal` as Route;
   const policyHref = `/${locale}/policy` as Route;
+  const apiLinks = [
+    {
+      href: env.belgiumAddressApiSourceUrl,
+      label: "BeST Address API",
+    },
+    {
+      href: env.franceSchoolCalendarSourceUrl,
+      label: "Education France",
+    },
+    {
+      href: env.francePublicHolidaysSourceUrl,
+      label: "Calendrier API Gouv",
+    },
+    {
+      href: env.openHolidaysSourceUrl,
+      label: "OpenHolidays API",
+    },
+    {
+      href: env.geoApiSourceUrl,
+      label: "API Geo",
+    },
+  ];
 
   return (
     <footer className="site-footer">
@@ -66,7 +65,7 @@ export function SiteFooter({ labels, locale }: SiteFooterProps) {
           <div className="site-footer__group">
             <p className="page-footer__label">{labels.api}</p>
             <div className="site-footer__links">
-              {API_LINKS.map((link) => (
+              {apiLinks.map((link) => (
                 <a
                   className="footer-link"
                   href={link.href}
