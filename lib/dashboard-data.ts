@@ -4,21 +4,15 @@ import { env } from "@/lib/env";
 import { getDictionary } from "@/lib/i18n";
 import type {
   AppLocale,
-  BelgiumCardData,
   CountdownItem,
   CountdownStatusTone,
   CountryDefinition,
   CountryPageData,
   CountrySlug,
   CountryZoneConfig,
-  DashboardData,
   HolidayApiEntry,
   PublicHolidayData,
   RemainingVacationData,
-  TenYearVacationData,
-  TenYearVacationYear,
-  VacationPeriodSummary,
-  ZoneCardData,
 } from "@/lib/types";
 import {
   buildTargetDateTime,
@@ -28,16 +22,6 @@ import {
 } from "@/lib/time";
 
 const RECENTLY_PAST_RETENTION_DAYS = 21;
-
-type NagerPublicHolidayEntry = {
-  countryCode: string;
-  counties: string[] | null;
-  date: string;
-  global: boolean;
-  localName: string;
-  name: string;
-  types: string[];
-};
 
 type FrancePublicHolidayApiResponse = Record<string, string>;
 
@@ -54,44 +38,171 @@ const ZONE_COLOR_PALETTE = [
   { color: "#84cc16", glow: "rgba(132, 204, 22, 0.28)" },
 ];
 
-const API_LANGUAGE_ALLOWLIST = new Set([
-  "BG",
-  "BS",
-  "CA",
-  "CS",
-  "CY",
-  "DA",
-  "DE",
-  "EL",
-  "EN",
-  "ES",
-  "ET",
-  "FI",
-  "FR",
-  "GA",
-  "HR",
-  "HU",
-  "IS",
-  "IT",
-  "LB",
-  "LT",
-  "LV",
-  "MK",
-  "MT",
-  "NL",
-  "NO",
-  "PL",
-  "PT",
-  "RO",
-  "RU",
-  "SK",
-  "SL",
-  "SQ",
-  "SR",
-  "SV",
-  "TR",
-  "UK",
-]);
+const API_LANGUAGE_ALLOWLIST = new Set(["EN", "FR", "PL"]);
+
+type EventNameTranslation = {
+  en: string;
+  fr: string;
+  matchers: string[];
+};
+
+const EVENT_NAME_TRANSLATIONS: EventNameTranslation[] = [
+  {
+    en: "New Year's Day",
+    fr: "Jour de l'An",
+    matchers: ["new years day", "jour de l an", "neujahr"],
+  },
+  {
+    en: "Epiphany",
+    fr: "Epiphanie",
+    matchers: ["epiphany", "epiphanie", "heilige drei konige"],
+  },
+  {
+    en: "Carnival holidays",
+    fr: "Vacances de carnaval",
+    matchers: ["carnival holidays", "carnival break", "vacances de carnaval", "faschingsferien"],
+  },
+  {
+    en: "Winter holidays",
+    fr: "Vacances d'hiver",
+    matchers: ["winter holidays", "winter break", "vacances d hiver", "winterferien"],
+  },
+  {
+    en: "Semester break",
+    fr: "Vacances de semestre",
+    matchers: ["semester break", "semester holidays", "vacances de semestre", "semesterferien"],
+  },
+  {
+    en: "Spring holidays",
+    fr: "Vacances de printemps",
+    matchers: ["spring holidays", "spring break", "vacances de printemps", "fruhlingsferien"],
+  },
+  {
+    en: "Easter holidays",
+    fr: "Vacances de Pâques",
+    matchers: ["easter holidays", "easter break", "vacances de paques", "osterferien"],
+  },
+  {
+    en: "Summer holidays",
+    fr: "Vacances d'ete",
+    matchers: ["summer holidays", "summer break", "vacances d ete", "sommerferien"],
+  },
+  {
+    en: "Autumn holidays",
+    fr: "Vacances d'automne",
+    matchers: ["autumn holidays", "fall holidays", "vacances d automne", "herbstferien"],
+  },
+  {
+    en: "Christmas holidays",
+    fr: "Vacances de Noel",
+    matchers: ["christmas holidays", "christmas break", "vacances de noel", "weihnachtsferien"],
+  },
+  {
+    en: "Whitsun holidays",
+    fr: "Vacances de Pentecote",
+    matchers: ["whitsun holidays", "pentecost holidays", "vacances de pentecote", "pfingstferien"],
+  },
+  {
+    en: "Holiday",
+    fr: "Jour ferie",
+    matchers: ["holiday", "feiertag"],
+  },
+  {
+    en: "Easter Monday",
+    fr: "Lundi de Pâques",
+    matchers: ["easter monday", "lundi de paques", "ostermontag"],
+  },
+  {
+    en: "Good Friday",
+    fr: "Vendredi saint",
+    matchers: ["good friday", "vendredi saint", "karfreitag"],
+  },
+  {
+    en: "Labour Day",
+    fr: "Fete du Travail",
+    matchers: ["labour day", "labor day", "fete du travail", "tag der arbeit", "1er mai"],
+  },
+  {
+    en: "Victory in Europe Day",
+    fr: "Victoire 1945",
+    matchers: ["victory in europe day", "victoire 1945", "tag der befreiung", "8 mai"],
+  },
+  {
+    en: "Ascension",
+    fr: "Ascension",
+    matchers: ["ascension", "christi himmelfahrt"],
+  },
+  {
+    en: "Ascension Bridge",
+    fr: "Pont de l'Ascension",
+    matchers: ["pont de l ascension", "ascension bridge"],
+  },
+  {
+    en: "Whit Monday",
+    fr: "Lundi de Pentecote",
+    matchers: ["whit monday", "monday of pentecost", "lundi de pentecote", "pfingstmontag"],
+  },
+  {
+    en: "National Day",
+    fr: "Fete nationale",
+    matchers: ["national day", "fete nationale"],
+  },
+  {
+    en: "Assumption",
+    fr: "Assomption",
+    matchers: ["assumption", "assomption", "maria himmelfahrt"],
+  },
+  {
+    en: "All Saints' Day",
+    fr: "Toussaint",
+    matchers: ["all saints day", "all saints day ", "toussaint", "allerheiligen"],
+  },
+  {
+    en: "Armistice Day",
+    fr: "Armistice",
+    matchers: ["armistice day", "armistice", "waffenstillstand", "11 novembre"],
+  },
+  {
+    en: "Christmas Day",
+    fr: "Noel",
+    matchers: ["christmas day", "noel", "weihnachtstag"],
+  },
+  {
+    en: "Boxing Day",
+    fr: "Lendemain de Noel",
+    matchers: ["boxing day", "lendemain de noel", "zweiter weihnachtstag"],
+  },
+  {
+    en: "German Unity Day",
+    fr: "Jour de l'unite allemande",
+    matchers: ["german unity day", "tag der deutschen einheit"],
+  },
+  {
+    en: "Corpus Christi",
+    fr: "Fete-Dieu",
+    matchers: ["corpus christi", "fete dieu", "fronleichnam"],
+  },
+  {
+    en: "Immaculate Conception",
+    fr: "Immaculee Conception",
+    matchers: ["immaculate conception", "immaculee conception"],
+  },
+  {
+    en: "Saint Stephen's Day",
+    fr: "Saint-Etienne",
+    matchers: ["saint stephens day", "saint etienne", "st stephen's day"],
+  },
+  {
+    en: "Non-teaching days",
+    fr: "Jours non scolaires",
+    matchers: ["non teaching days", "non teaching day", "jours non scolaires"],
+  },
+  {
+    en: "Floating holiday",
+    fr: "Jour ferie mobile",
+    matchers: ["floating holiday", "jour ferie mobile"],
+  },
+] as const;
 
 const COUNTRY_ZONE_OVERRIDES: Record<
   string,
@@ -142,31 +253,47 @@ function buildApiWindow(timeZone: string) {
   };
 }
 
-function buildTenYearApiWindow(timeZone: string) {
-  const now = DateTime.now().setZone(timeZone);
-
-  return {
-    validFrom: now.toISODate() ?? "",
-    validTo: now.plus({ years: 10 }).endOf("year").toISODate() ?? "",
-  };
-}
-
 function getApiLanguage(locale: AppLocale) {
   const candidate = locale.slice(0, 2).toUpperCase();
   return API_LANGUAGE_ALLOWLIST.has(candidate) ? candidate : "EN";
 }
 
+function normalizeTranslationKey(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’]/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function translateEventName(text: string, locale: AppLocale) {
+  const normalizedText = normalizeTranslationKey(text);
+  const targetLanguage = locale === "fr" ? "fr" : "en";
+
+  const translation = EVENT_NAME_TRANSLATIONS.find((entry) =>
+    entry.matchers.includes(normalizedText),
+  );
+
+  if (!translation) {
+    return text;
+  }
+
+  return translation[targetLanguage];
+}
+
 function getLocalizedText(entries: HolidayApiEntry["name"], locale: AppLocale) {
   const preferredLanguage = getApiLanguage(locale);
-
-  return (
+  const rawText =
     entries.find((entry) => entry.language === preferredLanguage)?.text ??
     entries.find((entry) => entry.language === "FR")?.text ??
     entries.find((entry) => entry.language === "EN")?.text ??
-    entries.find((entry) => entry.language === "DE")?.text ??
+    entries.find((entry) => entry.language === "PL")?.text ??
     entries[0]?.text ??
-    "Event"
-  );
+    "Event";
+
+  return translateEventName(rawText, locale);
 }
 
 function normalizeLabel(value: string) {
@@ -174,34 +301,11 @@ function normalizeLabel(value: string) {
 }
 
 function getNationalZoneLabel(locale: AppLocale) {
-  const normalizedLocale = locale.slice(0, 2);
-
-  switch (normalizedLocale) {
-    case "de":
-      return "National";
-    case "es":
-      return "Nacional";
-    case "fr":
-      return "National";
-    case "it":
-      return "Nazionale";
-    case "nl":
-      return "Nationaal";
-    case "pl":
-      return "Krajowy";
-    case "pt":
-      return "Nacional";
-    case "ro":
-      return "National";
-    case "ru":
-      return "Natsionalny";
-    case "tr":
-      return "Ulusal";
-    case "uk":
-      return "Natsionalnyi";
-    default:
-      return "National";
+  if (locale === "pl") {
+    return "Krajowy";
   }
+
+  return "National";
 }
 
 function normalizeIcsText(value: string) {
@@ -366,58 +470,6 @@ async function fetchFranceOfficialPublicHolidays() {
     .sort((first, second) => first.startDate.localeCompare(second.startDate));
 }
 
-async function fetchNagerPublicHolidayEntries(country: CountryDefinition) {
-  const now = DateTime.now().setZone(country.timeZone);
-  const years = [now.year, now.plus({ years: 1 }).year];
-  const responses = await Promise.all(
-    years.map(async (year) => {
-      const response = await fetch(
-        `${env.nagerDateBaseUrl}/PublicHolidays/${year}/${country.isoCode}`,
-        {
-          headers: {
-            Accept: "application/json",
-          },
-          next: {
-            revalidate: 60 * 60 * 6,
-          },
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(`Nager.Date PublicHolidays returned ${response.status}`);
-      }
-
-      return (await response.json()) as NagerPublicHolidayEntry[];
-    }),
-  );
-
-  const uniqueEntries = new Map<string, HolidayApiEntry>();
-
-  for (const entry of responses.flat()) {
-    const id = `nager-${country.isoCode}-${entry.date}-${entry.name}`;
-
-    uniqueEntries.set(id, {
-      id,
-      startDate: entry.date,
-      endDate: entry.date,
-      type: "PublicHoliday",
-      name: [{ language: "EN", text: entry.name }],
-      regionalScope: entry.global ? "National" : "Regional",
-      temporalScope: entry.types.join(","),
-      nationwide: entry.global,
-      subdivisions:
-        entry.counties?.map((code) => ({
-          code,
-          shortName: code,
-        })) ?? [],
-    });
-  }
-
-  return [...uniqueEntries.values()].sort((first, second) =>
-    first.startDate.localeCompare(second.startDate),
-  );
-}
-
 function buildCountdownItem(
   entry: HolidayApiEntry,
   timeZone: string,
@@ -475,6 +527,10 @@ function normalizeHolidayCampaignKey(value: string) {
 
 function isFranceBridgeHolidayEntry(entry: HolidayApiEntry) {
   return normalizeHolidayCampaignKey(getLocalizedText(entry.name, "fr")) === "pont de l ascension";
+}
+
+function isFranceAscensionHolidayEntry(entry: HolidayApiEntry) {
+  return normalizeHolidayCampaignKey(getLocalizedText(entry.name, "fr")) === "ascension";
 }
 
 function buildFranceBridgePublicHolidays(entries: HolidayApiEntry[]) {
@@ -849,60 +905,58 @@ function buildPublicHolidayCards(
   country: CountryDefinition,
   locale: AppLocale,
 ): PublicHolidayData[] {
-  const maxItems = country.isoCode === "FR" ? 5 : 3;
   const relevantEntries = sortByStartDate(entries).filter(
     (entry) => entry.nationwide ?? true,
   );
 
-  return relevantEntries
-    .filter((entry) => !isDateAfterRange(entry.endDate, country.timeZone))
-    .slice(0, maxItems)
-    .map((entry) => ({
+  const upcomingEntries = relevantEntries.filter(
+    (entry) => !isDateAfterRange(entry.endDate, country.timeZone),
+  );
+
+  const visibleEntries =
+    country.isoCode === "FR"
+      ? (() => {
+          const principalEntries = upcomingEntries.filter(
+            (entry) => !isFranceBridgeHolidayEntry(entry),
+          );
+          const nextPrincipalEntries = principalEntries.slice(0, 4);
+          const ascensionEntry = nextPrincipalEntries.find(isFranceAscensionHolidayEntry);
+
+          if (!ascensionEntry) {
+            return nextPrincipalEntries;
+          }
+
+          const ascensionYear = DateTime.fromISO(ascensionEntry.startDate, {
+            zone: country.timeZone,
+          }).year;
+          const bridgeEntry = upcomingEntries.find((entry) => {
+            if (!isFranceBridgeHolidayEntry(entry)) {
+              return false;
+            }
+
+            const bridgeYear = DateTime.fromISO(entry.startDate, {
+              zone: country.timeZone,
+            }).year;
+
+            return bridgeYear === ascensionYear;
+          });
+
+          if (!bridgeEntry) {
+            return nextPrincipalEntries;
+          }
+
+          return nextPrincipalEntries.flatMap((entry) =>
+            entry.id === ascensionEntry.id ? [entry, bridgeEntry] : [entry],
+          );
+        })()
+      : upcomingEntries.slice(0, 4);
+
+  return visibleEntries.map((entry) => ({
       ...buildCountdownItem(entry, country.timeZone, locale),
       description: getPublicHolidayDescription(country, entry, locale),
       nationwide: Boolean(entry.nationwide ?? true),
       regionalScope: entry.regionalScope,
     }));
-}
-
-function buildVacationSummary(
-  entry: HolidayApiEntry,
-  country: CountryDefinition,
-  locale: AppLocale,
-  zoneCode?: string,
-): VacationPeriodSummary {
-  return {
-    id: zoneCode ? `${zoneCode}-${entry.id}` : entry.id,
-    name: getLocalizedText(entry.name, locale),
-    dateLabel: formatDateLabel(entry.startDate, entry.endDate, country.timeZone, locale),
-    startDate: entry.startDate,
-    endDate: entry.endDate,
-  };
-}
-
-function buildTenYearVacationYears(
-  entries: HolidayApiEntry[],
-  locale: AppLocale,
-): TenYearVacationYear[] {
-  const country = getCountryDefinition("france");
-  const currentYear = DateTime.now().setZone(country.timeZone).year;
-  const years = Array.from({ length: 10 }, (_, index) => currentYear + index);
-  const sortedEntries = sortByStartDate(entries);
-  const zones = buildZoneConfigs(country, entries, locale);
-
-  return years.map((year) => ({
-    year,
-    zones: zones.map((zone) => ({
-      zone: zone.code,
-      label: zone.label,
-      periods: sortedEntries
-        .filter(
-          (entry) =>
-            entry.startDate.startsWith(String(year)) && zoneMatchesEntry(entry, zone),
-        )
-        .map((entry) => buildVacationSummary(entry, country, locale, zone.code)),
-    })),
-  }));
 }
 
 async function fetchCountryHolidayData(country: CountryDefinition, locale: AppLocale) {
@@ -983,14 +1037,6 @@ export async function getCountryPageData(
       : schoolHolidays;
   let publicHolidayEntries = openHolidayPublicHolidays;
 
-  if (publicHolidayEntries.length === 0) {
-    try {
-      publicHolidayEntries = await fetchNagerPublicHolidayEntries(country);
-    } catch {
-      publicHolidayEntries = [];
-    }
-  }
-
   if (schoolResult.status === "rejected" || schoolHolidays.length === 0) {
     warnings.push(dictionary.countryPage.noVacationData);
   }
@@ -1020,72 +1066,6 @@ export async function getCountryPageData(
       excludedRemainingVacationIds,
     ),
     publicHolidays: buildPublicHolidayCards(publicHolidayEntries, country, locale),
-    warnings,
-  };
-}
-
-export async function getDashboardData(locale: AppLocale = "fr"): Promise<DashboardData> {
-  const [franceData, belgiumData] = await Promise.all([
-    getCountryPageData("france", locale),
-    getCountryPageData("belgium", locale),
-  ]);
-
-  const zones: ZoneCardData[] = franceData.nextVacations.slice(0, 3).map((zone) => ({
-    zone: (zone.label.split(" ").at(-1) ?? "A") as "A" | "B" | "C",
-    label: zone.label,
-    code: zone.code,
-    color: zone.color,
-    glow: zone.glow,
-    academies: [],
-    regions: [],
-    nextHoliday: zone.nextHoliday,
-  }));
-
-  const belgium: BelgiumCardData[] = belgiumData.nextVacations.slice(0, 3).map((zone) => ({
-    code: zone.code,
-    label: zone.label,
-    shortLabel: zone.shortLabel,
-    color: zone.color,
-    glow: zone.glow,
-    nextHoliday: zone.nextHoliday,
-  }));
-
-  return {
-    generatedAt: franceData.generatedAt,
-    zones,
-    belgium,
-    publicHolidays: franceData.publicHolidays,
-    sources: franceData.country.sources,
-    warnings: [...franceData.warnings, ...belgiumData.warnings],
-  };
-}
-
-export async function getTenYearVacationData(
-  locale: AppLocale = "fr",
-): Promise<TenYearVacationData> {
-  const country = getCountryDefinition("france");
-  const tenYearWindow = buildTenYearApiWindow(country.timeZone);
-
-  const franceSchoolResult = await fetchOpenHolidays("SchoolHolidays", {
-    countryIsoCode: country.isoCode,
-    languageIsoCode: getApiLanguage(locale),
-    validFrom: tenYearWindow.validFrom,
-    validTo: tenYearWindow.validTo,
-  })
-    .then((value) => ({ status: "fulfilled" as const, value }))
-    .catch((error) => ({ status: "rejected" as const, reason: error }));
-
-  const warnings: string[] = [];
-  const franceSchoolHolidays =
-    franceSchoolResult.status === "fulfilled" ? franceSchoolResult.value : [];
-
-  if (franceSchoolResult.status === "rejected") {
-    warnings.push("Ten-year school holiday data is temporarily unavailable.");
-  }
-
-  return {
-    generatedAt: new Date().toISOString(),
-    years: buildTenYearVacationYears(franceSchoolHolidays, locale),
     warnings,
   };
 }

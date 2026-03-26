@@ -26,7 +26,7 @@ export default async function LocalizedHomePage({
           <p className="home-stage__helper">{dictionary.home.helper}</p>
         </div>
 
-        <EuropeMap locale={locale} />
+        <EuropeMap ariaLabel={dictionary.home.mapAriaLabel} locale={locale} />
       </section>
     </main>
   );

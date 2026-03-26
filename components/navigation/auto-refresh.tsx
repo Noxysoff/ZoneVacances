@@ -8,9 +8,7 @@ import { SUPPORTED_LOCALES } from "@/lib/locale";
 const localePattern = `(?:${SUPPORTED_LOCALES.join("|")})`;
 
 const REFRESHABLE_PATHS = [
-  new RegExp(`^/${localePattern}/countries(?:/.+)?$`),
-  new RegExp(`^/${localePattern}/search$`),
-  new RegExp(`^/${localePattern}/ten-years$`),
+  new RegExp(`^/${localePattern}/(?:france|belgium)$`),
 ];
 
 export function AutoRefresh() {

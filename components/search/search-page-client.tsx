@@ -1,24 +1,19 @@
 "use client";
 
-import type { Route } from "next";
 import { startTransition, useDeferredValue, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import type {
   SearchApiResponse,
   SearchSuggestion,
   SearchSuggestionType,
 } from "@/lib/types";
 
-const TYPE_LABELS: Record<SearchSuggestionType, string> = {
+const DEFAULT_TYPE_LABELS: Record<SearchSuggestionType, string> = {
   commune: "Commune",
   departement: "Departement",
   region: "Region",
 };
 
 const DEFAULT_LABELS = {
-  emptyHint:
-    "Tape une lettre et on te propose tout de suite la commune, le departement ou la region avec sa zone scolaire.",
-  helper: "La recherche se lance automatiquement a chaque lettre.",
   inputLabel: "Ville, village, departement, region ou code postal",
   loading: "Recherche en cours...",
   noResults: "Aucun resultat pour cette recherche.",
@@ -55,43 +50,38 @@ function SearchIcon() {
 
 export function SearchPageClient({
   basePath = "/recherche",
+  initialQuery = "",
   labels = DEFAULT_LABELS,
+  locale = "fr",
+  typeLabels = DEFAULT_TYPE_LABELS,
 }: {
   basePath?: string;
+  initialQuery?: string;
   labels?: typeof DEFAULT_LABELS;
+  locale?: "fr" | "en" | "pl";
+  typeLabels?: Record<SearchSuggestionType, string>;
 }) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const urlQuery = searchParams.get("q") ?? "";
-  const [query, setQuery] = useState(urlQuery);
+  const [query, setQuery] = useState(initialQuery);
   const deferredQuery = useDeferredValue(query);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setQuery((current) => (current === urlQuery ? current : urlQuery));
-  }, [urlQuery]);
-
-  useEffect(() => {
     const trimmed = query.trim();
-
-    if (trimmed === urlQuery) {
-      return;
-    }
 
     const timeoutId = window.setTimeout(() => {
       const nextUrl =
         trimmed.length > 0
           ? `${basePath}?q=${encodeURIComponent(trimmed)}`
           : basePath;
-      router.replace(nextUrl as Route, { scroll: false });
+      window.history.replaceState(window.history.state, "", nextUrl);
     }, 120);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [basePath, query, router, urlQuery]);
+  }, [basePath, query]);
 
   useEffect(() => {
     const trimmed = deferredQuery.trim();
@@ -108,10 +98,13 @@ export function SearchPageClient({
       setIsLoading(true);
 
       try {
-        const response = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(trimmed)}&locale=${locale}`,
+          {
+            cache: "no-store",
+            signal: controller.signal,
+          },
+        );
 
         if (!response.ok) {
           throw new Error(labels.requestError);
@@ -144,7 +137,7 @@ export function SearchPageClient({
       controller.abort();
       window.clearTimeout(timeoutId);
     };
-  }, [deferredQuery, labels.requestError]);
+  }, [deferredQuery, labels.requestError, locale]);
 
   return (
     <section className="search-shell">
@@ -169,15 +162,11 @@ export function SearchPageClient({
             value={query}
           />
         </div>
-
-        <p className="search-helper">{labels.helper}</p>
       </div>
 
       {error ? <div className="warning-banner">{error}</div> : null}
 
-      {query.trim().length === 0 ? (
-        <div className="search-empty">{labels.emptyHint}</div>
-      ) : isLoading ? (
+      {query.trim().length === 0 ? null : isLoading ? (
         <div className="search-empty">{labels.loading}</div>
       ) : suggestions.length === 0 ? (
         <div className="search-empty">{labels.noResults}</div>
@@ -195,10 +184,13 @@ export function SearchPageClient({
                 <div className="search-suggestion__header">
                   <div className="search-suggestion__main">
                     <span className="search-suggestion__title">{suggestion.label}</span>
-                    <span className="search-type">{TYPE_LABELS[suggestion.type]}</span>
+                    <span className="search-type">{typeLabels[suggestion.type]}</span>
                   </div>
 
-                  <span className="search-zone" data-zone={suggestion.zone}>
+                  <span
+                    className="search-zone"
+                    style={{ ["--search-zone-color" as string]: suggestion.zoneColor }}
+                  >
                     {suggestion.zoneLabel}
                   </span>
                 </div>

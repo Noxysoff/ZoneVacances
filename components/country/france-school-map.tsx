@@ -1,6 +1,5 @@
 import franceDepartmentsMap from "@svg-maps/france.departments";
 import franceRegionsMap from "@svg-maps/france.regions";
-import { REGION_ZONE_LABELS } from "@/lib/constants";
 import type { RegionTone } from "@/lib/types";
 
 type FranceMapLocation = {
@@ -45,11 +44,17 @@ const metropolitanDepartments = typedFranceDepartmentsMap.locations.filter((depa
   METROPOLITAN_DEPARTMENT_PATTERN.test(department.id),
 );
 
-export function FranceSchoolMap({ sticky = true }: { sticky?: boolean }) {
+export function FranceSchoolMap({
+  ariaLabel,
+  sticky = true,
+}: {
+  ariaLabel: string;
+  sticky?: boolean;
+}) {
   return (
     <div className={`france-map-panel${sticky ? "" : " france-map-panel--static"}`}>
       <svg
-        aria-label="Carte detaillee de la France par regions scolaires"
+        aria-label={ariaLabel}
         className="france-map"
         role="img"
         viewBox={typedFranceDepartmentsMap.viewBox}
@@ -66,11 +71,7 @@ export function FranceSchoolMap({ sticky = true }: { sticky?: boolean }) {
               fill={MAP_FILL_BY_TONE[tone]}
               key={region.id}
               vectorEffect="non-scaling-stroke"
-            >
-              <title>
-                {region.name} - {REGION_ZONE_LABELS[tone]}
-              </title>
-            </path>
+            />
           );
         })}
 

@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: env.siteName,
   description:
-    "European school holiday dashboard with localized routes, country maps and real-time countdowns.",
+    "France and Belgium school holiday dashboard with localized routes, detailed country maps and real-time countdowns.",
   applicationName: env.siteName,
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,

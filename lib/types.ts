@@ -1,12 +1,17 @@
-export type AppLocale = string;
-export type CountrySlug = string;
-export type CountryIsoCode = string;
+export type AppLocale = "fr" | "en" | "pl";
+export type CountrySlug = "france" | "belgium";
+export type CountryIsoCode = "FR" | "BE";
 export type ZoneId = "A" | "B" | "C";
 export type RegionTone = ZoneId | "SPECIAL";
 export type CountdownMode = "untilStart" | "untilEnd";
 export type CountdownStatusTone = "current" | "past" | "upcoming";
 export type SearchSuggestionType = "commune" | "departement" | "region";
 export type CountryZoneMatchType = "group" | "national" | "subdivision";
+export type SearchZoneKey =
+  | RegionTone
+  | "BE-FR"
+  | "BE-NL"
+  | "BE-DE";
 
 export interface LocalizedText {
   language: string;
@@ -75,75 +80,20 @@ export interface CountdownItem {
   statusTone: CountdownStatusTone;
 }
 
-export interface ZoneCardData {
-  zone: ZoneId;
-  label: string;
-  code: string;
-  color: string;
-  glow: string;
-  academies: string[];
-  regions: string[];
-  nextHoliday: CountdownItem | null;
-}
-
-export interface BelgiumCardData {
-  code: string;
-  label: string;
-  shortLabel: string;
-  color: string;
-  glow: string;
-  nextHoliday: CountdownItem | null;
-}
-
 export interface PublicHolidayData extends CountdownItem {
   description?: string;
   nationwide: boolean;
   regionalScope: string;
 }
 
-export interface VacationPeriodSummary {
-  id: string;
-  name: string;
-  dateLabel: string;
-  startDate: string;
-  endDate: string;
-}
-
-export interface TenYearZoneVacations {
-  zone: string;
-  label: string;
-  periods: VacationPeriodSummary[];
-}
-
-export interface TenYearVacationYear {
-  year: number;
-  zones: TenYearZoneVacations[];
-}
-
-export interface TenYearVacationData {
-  generatedAt: string;
-  years: TenYearVacationYear[];
-  warnings: string[];
-}
-
-export interface DashboardData {
-  generatedAt: string;
-  zones: ZoneCardData[];
-  belgium: BelgiumCardData[];
-  publicHolidays: PublicHolidayData[];
-  sources: Array<{
-    label: string;
-    href: string;
-  }>;
-  warnings: string[];
-}
-
 export interface SearchSuggestion {
+  country: CountrySlug;
   id: string;
   label: string;
   type: SearchSuggestionType;
-  zone: RegionTone;
+  zone: SearchZoneKey;
   zoneLabel: string;
+  zoneColor: string;
   regionCode: string;
   regionName: string;
   detail: string;
@@ -164,10 +114,6 @@ export interface CountryDefinition {
   mapId: string;
   defaultName: string;
   timeZone: string;
-  sources: Array<{
-    href: string;
-    label: string;
-  }>;
 }
 
 export interface CountryZoneConfig {

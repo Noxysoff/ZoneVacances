@@ -1,60 +1,110 @@
-const BELGIUM_OUTLINE_PATH =
-  "m 488.41175,294.8954 0.013,0.093 0.077,0.039 0.269,-0.02 0.136,-0.169 0.108,-0.106 0.08,0.072 0.039,0.208 0.074,0.27 0.321,0.302 0.271,0.086 0.334,-0.059 0.132,-0.054 0.09,0.045 0.089,0.16 0.191,0.182 0.404,0.13 0.123,0.073 0.086,0.123 -0.025,0.174 -0.192,0.435 -0.025,0.128 0.026,0.043 -0.038,0.08 -0.25,0.291 -0.022,0.102 0.083,0.167 0.069,0.138 0.002,-0.027 0.383,-0.125 0.173,0.251 0.284,0.009 0.034,0.081 0.319,0.234 0.098,0.185 0.229,0.179 -0.19,0.226 0.029,0.101 0.068,0.103 0.258,0.06 0.129,0.148 0.008,0.227 0.059,0.368 -0.532,0.366 -0.151,0.408 -0.014,0.08 -0.018,-0.012 -0.058,-0.135 -0.097,0.002 -0.22,-0.057 -0.307,0.368 -0.139,0.306 -0.082,0.224 -0.124,0.181 -0.025,0.191 0.016,0.081 -0.042,0.103 -0.002,0.109 0.176,0.213 0.045,0.116 0.215,0.379 -0.067,0.137 -0.053,0.149 -0.062,0.106 -0.073,0.067 -0.222,-0.004 -0.282,0.047 -0.19,0.075 -0.098,0 -0.204,-0.188 -0.228,-0.282 -0.144,-0.135 -0.066,-0.116 -0.179,-0.049 -0.255,-0.139 -0.177,-0.152 -0.152,-0.095 -0.214,-0.047 -0.177,0.005 -0.051,-0.256 -0.022,-0.292 -0.144,-0.197 0.198,-0.768 -0.118,-0.075 -0.128,0.061 -0.186,0.184 -0.089,0.218 -0.053,0.194 -0.312,0.183 -0.495,0.067 -0.541,-0.067 -0.074,-0.049 -0.035,-0.056 0,-0.067 0.037,-0.104 0.094,-0.127 0.024,-0.18 -0.097,-0.156 -0.063,-0.061 0.025,-0.151 0.071,-0.189 0.015,-0.109 -0.367,-0.327 -0.265,-0.064 -0.257,-0.012 -0.195,-0.037 -0.114,0.016 -0.081,0.095 -0.083,0.069 -0.062,-0.082 -0.114,-0.582 -0.088,-0.088 -0.332,-0.098 -0.452,-0.035 -0.12,-0.106 -0.066,-0.263 -0.042,-0.316 -0.148,-0.304 -0.076,-0.077 -0.135,-0.134 -0.236,0.055 -0.283,0.177 -0.167,0.048 -0.064,0.019 -0.225,-0.172 -0.254,-0.269 -0.203,-0.286 -0.049,-0.159 0.062,-0.193 -0.074,-0.148 -0.109,-0.271 -0.031,-0.212 1.221,-0.752 0.744,-0.386 0.351,-0.117 0.084,0.388 0.064,0.123 0.083,0.08 0.11,0.016 0.127,-0.096 0.178,-0.101 0.285,0.047 0.207,0.093 0.073,0.097 0.138,0.092 0.2,0.022 0.387,-0.176 0.372,-0.268 0.109,-0.187 0.041,-0.169 0.22,0.112 0.194,0.024 0.086,-0.05 -0.055,-0.271 0.158,-0.145 0.175,-0.066 0.079,0.117 0.161,0.12 0.127,0.001 0.341,-0.312 0.08,0.062 0.074,0.111 z";
+import belgiumMap from "@/data/belgium-map.json";
 
-export function BelgiumSchoolMap({ sticky = true }: { sticky?: boolean }) {
+type BelgiumCommunityCode = "BE-DE" | "BE-FR" | "BE-NL";
+
+type BelgiumMapPayload = {
+  background: {
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+  };
+  districts: Array<{
+    id: string;
+    label: string;
+    path: string;
+  }>;
+  municipalities: Array<{
+    community: BelgiumCommunityCode;
+    districtId: string | null;
+    id: string;
+    label: string;
+    path: string;
+  }>;
+  provinces: Array<{
+    id: string;
+    label: string;
+    path: string;
+  }>;
+  viewBox: string;
+};
+
+const typedBelgiumMap = belgiumMap as BelgiumMapPayload;
+
+const BELGIUM_COMMUNITY_FILL_BY_CODE: Record<BelgiumCommunityCode, string> = {
+  "BE-DE": "rgba(250, 204, 21, 0.18)",
+  "BE-FR": "rgba(20, 184, 166, 0.18)",
+  "BE-NL": "rgba(56, 189, 248, 0.18)",
+};
+
+const BELGIUM_COMMUNITY_PATHS = typedBelgiumMap.municipalities.reduce<
+  Record<BelgiumCommunityCode, string>
+>(
+  (pathsByCommunity, municipality) => {
+    pathsByCommunity[municipality.community] += ` ${municipality.path}`;
+    return pathsByCommunity;
+  },
+  {
+    "BE-DE": "",
+    "BE-FR": "",
+    "BE-NL": "",
+  },
+);
+
+export function BelgiumSchoolMap({
+  ariaLabel,
+  sticky = true,
+}: {
+  ariaLabel: string;
+  sticky?: boolean;
+}) {
   return (
     <div className={`country-map-panel${sticky ? "" : " country-map-panel--static"}`}>
       <svg
-        aria-label="Belgium school communities map"
+        aria-label={ariaLabel}
         className="belgium-school-map"
         role="img"
-        viewBox="486.4 293.4 10 9.2"
+        viewBox={typedBelgiumMap.viewBox}
       >
-        <defs>
-          <clipPath id="belgium-country-map-clip">
-            <path d={BELGIUM_OUTLINE_PATH} />
-          </clipPath>
-        </defs>
+        <rect
+          className="belgium-school-map__background"
+          height={typedBelgiumMap.background.height}
+          width={typedBelgiumMap.background.width}
+          x={typedBelgiumMap.background.x}
+          y={typedBelgiumMap.background.y}
+        />
 
-        <rect className="belgium-school-map__background" height="9.2" width="10" x="486.4" y="293.4" />
+        {(Object.entries(BELGIUM_COMMUNITY_PATHS) as Array<[BelgiumCommunityCode, string]>).map(
+          ([communityCode, path]) => (
+          <path
+            className="belgium-school-map__province-fill"
+            d={path.trim()}
+            fill={BELGIUM_COMMUNITY_FILL_BY_CODE[communityCode]}
+            key={communityCode}
+            vectorEffect="non-scaling-stroke"
+          />
+          ),
+        )}
 
-        <g clipPath="url(#belgium-country-map-clip)">
+        {typedBelgiumMap.districts.map((district) => (
           <path
-            className="belgium-school-map__zone belgium-school-map__zone--nl"
-            d="M486.35 293.45H496.55V297.55H486.35Z"
+            className="belgium-school-map__district-outline"
+            d={district.path}
+            fill="none"
+            key={`${district.id}-district`}
+            vectorEffect="non-scaling-stroke"
           />
-          <path
-            className="belgium-school-map__zone belgium-school-map__zone--fr"
-            d="M486.35 297.05H496.55V302.75H486.35Z"
-          />
-          <path
-            className="belgium-school-map__zone belgium-school-map__zone--de"
-            d="M492.85 296.05L496.4 295.55L496.45 302.1L493.25 301.2Z"
-          />
+        ))}
 
+        {typedBelgiumMap.provinces.map((province) => (
           <path
-            className="belgium-school-map__subdivision"
-            d="M488.1 296.45C489.55 296.9 491.2 296.9 492.75 296.25"
+            className="belgium-school-map__region-outline"
+            d={province.path}
+            fill="none"
+            key={`${province.id}-province`}
+            vectorEffect="non-scaling-stroke"
           />
-          <path
-            className="belgium-school-map__subdivision"
-            d="M487.5 298.2C489.2 298.05 491.15 297.95 492.9 298.15"
-          />
-          <path
-            className="belgium-school-map__subdivision"
-            d="M488 299.95C489.55 299.4 491.2 299.45 492.85 299.95"
-          />
-          <path
-            className="belgium-school-map__community-line"
-            d="M487.05 297.25C489.2 297.7 491.55 297.6 493.35 297.1"
-          />
-          <path
-            className="belgium-school-map__community-line"
-            d="M492.75 296.05C493.25 297.35 493.35 299 493.15 301.25"
-          />
-        </g>
-
-        <path className="belgium-school-map__outline" d={BELGIUM_OUTLINE_PATH} />
+        ))}
       </svg>
     </div>
   );

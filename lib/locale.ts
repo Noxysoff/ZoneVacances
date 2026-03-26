@@ -1,43 +1,6 @@
 import type { AppLocale } from "@/lib/types";
 
-export const SUPPORTED_LOCALES = [
-  "sq",
-  "bg",
-  "bs",
-  "ca",
-  "cs",
-  "cy",
-  "da",
-  "de",
-  "el",
-  "en",
-  "es",
-  "et",
-  "fi",
-  "fr",
-  "ga",
-  "hr",
-  "hu",
-  "is",
-  "it",
-  "lb",
-  "lt",
-  "lv",
-  "mk",
-  "mt",
-  "nl",
-  "no",
-  "pl",
-  "pt",
-  "ro",
-  "ru",
-  "sk",
-  "sl",
-  "sr",
-  "sv",
-  "tr",
-  "uk",
-] as const;
+export const SUPPORTED_LOCALES = ["fr", "en", "pl"] as const satisfies readonly AppLocale[];
 
 export const DEFAULT_LOCALE: AppLocale = "fr";
 export const LOCALE_COOKIE_NAME = "zonevacances-locale";

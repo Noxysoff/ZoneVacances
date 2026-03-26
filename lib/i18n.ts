@@ -4,13 +4,17 @@ type Dictionary = {
   nav: {
     allLanguages: string;
     availableCountries: string;
+    closeMenu: string;
     countries: string;
     home: string;
     language: string;
+    openMenu: string;
+    primaryNavigation: string;
     selectLanguage: string;
   };
   home: {
     helper: string;
+    mapAriaLabel: string;
     subtitle: string;
     title: string;
   };
@@ -26,13 +30,33 @@ type Dictionary = {
     title: string;
   };
   countryPage: {
+    belgiumMapLabel: string;
+    franceMapLabel: string;
     nextVacations: string;
     noPublicHolidays: string;
     noRemainingVacations: string;
     noVacationData: string;
+    otherVacations: string;
     publicHolidays: string;
     remainingVacations: string;
     updatedAt: string;
+  };
+  legalPage: {
+    intro: string;
+    placeholderText: string;
+    placeholderTitle: string;
+    subtitle: string;
+    title: string;
+  };
+  policyPage: {
+    analyticsText: string;
+    analyticsLinkLabel: string;
+    analyticsTitle: string;
+    noCollectionText: string;
+    noCollectionTitle: string;
+    policyLead: string;
+    subtitle: string;
+    title: string;
   };
   countdown: {
     current: string;
@@ -46,263 +70,183 @@ type Dictionary = {
     startsIn: string;
     upcoming: string;
   };
+  footer: {
+    api: string;
+    code: string;
+    copyright: string;
+    legal: string;
+    madeWithPassion: string;
+    policy: string;
+    reportIssues: string;
+    resources: string;
+    rightsReserved: string;
+    terms: string;
+  };
   common: {
-    allRightsReserved: string;
     holiday: string;
     noData: string;
-    publicSources: string;
     search: string;
-    tenYears: string;
     unavailable: string;
   };
 };
 
-const LANGUAGE_NATIVE_LABELS: Record<string, string> = {
-  sq: "Shqip",
-  bg: "Български",
-  bs: "Bosanski",
-  ca: "Català",
-  cs: "Čeština",
-  cy: "Cymraeg",
-  da: "Dansk",
-  de: "Deutsch",
-  el: "Ελληνικά",
-  en: "English",
-  es: "Español",
-  et: "Eesti",
-  fi: "Suomi",
-  fr: "Français",
-  ga: "Gaeilge",
-  hr: "Hrvatski",
-  hu: "Magyar",
-  is: "Íslenska",
-  it: "Italiano",
-  lb: "Lëtzebuergesch",
-  lt: "Lietuvių",
-  lv: "Latviešu",
-  mk: "Македонски",
-  mt: "Malti",
-  nl: "Nederlands",
-  no: "Norsk",
-  pl: "Polski",
-  pt: "Português",
-  ro: "Română",
-  ru: "Русский",
-  sk: "Slovenčina",
-  sl: "Slovenščina",
-  sr: "Српски",
-  sv: "Svenska",
-  tr: "Türkçe",
-  uk: "Українська",
-};
-
-const ENGLISH_DICTIONARY: Dictionary = {
-  nav: {
-    allLanguages: "All languages",
-    availableCountries: "Available countries",
-    countries: "Countries",
-    home: "Home",
-    language: "Language",
-    selectLanguage: "Choose language",
-  },
-  home: {
-    helper: "Every European country page is available from the map and the countries menu.",
-    subtitle: "Interactive European school holiday map",
-    title: "Find your holidays",
-  },
-  countriesPage: {
-    openCountry: "Open country page",
-    subtitle: "Browse every available European country page.",
-    title: "Countries",
-  },
-  languagePage: {
-    auto: "Browser language detection is enabled.",
-    current: "Current language",
-    subtitle: "Choose any supported European language.",
-    title: "Languages",
-  },
-  countryPage: {
-    nextVacations: "Next school breaks",
-    noPublicHolidays: "No upcoming public holidays right now.",
-    noRemainingVacations: "No more school breaks remain this year.",
-    noVacationData: "School holiday data is temporarily unavailable.",
-    publicHolidays: "Public holidays",
-    remainingVacations: "Remaining breaks this year",
-    updatedAt: "Last sync",
-  },
-  countdown: {
-    current: "Current",
-    days: "Days",
-    ended: "Ended",
-    hours: "Hours",
-    minutes: "Minutes",
-    past: "Past",
-    remaining: "Time left",
-    seconds: "Seconds",
-    startsIn: "Starts in",
-    upcoming: "Upcoming",
-  },
-  common: {
-    allRightsReserved:
-      "ZoneVacances. All rights reserved. Calendars and school zones are provided for information only.",
-    holiday: "Public holiday",
-    noData: "No data",
-    publicSources: "Public sources",
-    search: "Search",
-    tenYears: "10 years",
-    unavailable: "Temporarily unavailable",
-  },
-};
-
-const PARTIAL_DICTIONARIES: Record<string, Partial<Dictionary>> = {
-  de: {
+const DICTIONARIES: Record<AppLocale, Dictionary> = {
+  en: {
     nav: {
-      allLanguages: "Alle Sprachen",
-      availableCountries: "Verfugbare Lander",
-      countries: "Lander",
+      allLanguages: "Languages",
+      availableCountries: "Available countries",
+      closeMenu: "Close menu",
+      countries: "Countries",
       home: "Home",
-      language: "Sprache",
-      selectLanguage: "Sprache wahlen",
+      language: "Language",
+      openMenu: "Open menu",
+      primaryNavigation: "Primary navigation",
+      selectLanguage: "Choose language",
     },
     home: {
-      helper: "Jede europaische Landerseite ist uber die Karte und das Landermenue verfugbar.",
-      subtitle: "Interaktive europaische Schulferienkarte",
-      title: "Finde deine Ferien",
+      helper: "Choose France or Belgium on the map to open the school holiday dashboard.",
+      mapAriaLabel: "Interactive map of Europe",
+      subtitle: "School holiday map",
+      title: "Find your holidays",
     },
     countriesPage: {
-      openCountry: "Landesseite offnen",
-      subtitle: "Durchsuche alle verfugbaren europaischen Landesseiten.",
-      title: "Lander",
+      openCountry: "Open country page",
+      subtitle: "Browse the France and Belgium dashboards.",
+      title: "Countries",
     },
     languagePage: {
-      auto: "Die Browsersprache wird automatisch erkannt.",
-      current: "Aktuelle Sprache",
-      subtitle: "Wahle eine beliebige unterstutzte europaische Sprache.",
-      title: "Sprachen",
+      auto: "Browser language detection is enabled.",
+      current: "Current language",
+      subtitle: "Choose between French, English and Polish.",
+      title: "Languages",
     },
     countryPage: {
-      nextVacations: "Nachste Ferien",
-      noPublicHolidays: "Derzeit keine bevorstehenden Feiertage.",
-      noRemainingVacations: "Keine weiteren Ferien in diesem Jahr.",
-      noVacationData: "Schulferiendaten sind vorubergehend nicht verfugbar.",
-      publicHolidays: "Feiertage",
-      remainingVacations: "Verbleibende Ferien dieses Jahr",
-      updatedAt: "Letzte Aktualisierung",
+      belgiumMapLabel: "Detailed map of Belgium by school districts and provinces",
+      franceMapLabel: "Detailed map of France by school regions",
+      nextVacations: "Next school breaks",
+      noPublicHolidays: "No upcoming public holidays right now.",
+      noRemainingVacations: "No more school breaks remain this year.",
+      noVacationData: "School holiday data is temporarily unavailable.",
+      otherVacations: "Other breaks",
+      publicHolidays: "Public holidays",
+      remainingVacations: "Remaining breaks this year",
+      updatedAt: "Last sync",
+    },
+    legalPage: {
+      intro:
+        "This page will host the detailed terms of use for ZoneVacances. It is kept separate from the use policy so each topic stays clear.",
+      placeholderText:
+        "The full rules of use, responsibilities and practical details will be added later. In the meantime, the site remains available for informational purposes, and official public sources should remain the reference for sensitive dates.",
+      placeholderTitle: "Page in preparation",
+      subtitle: "Detailed rules of use will be added here later",
+      title: "Terms of use",
+    },
+    policyPage: {
+      analyticsText:
+        "The site may use Vercel analytics to view anonymized and aggregated audience information, such as the country of visit, device, browser or operating system. No advertising profile is created by ZoneVacances.",
+      analyticsLinkLabel: "Learn more about Vercel Analytics",
+      analyticsTitle: "Audience measurement",
+      noCollectionText:
+        "ZoneVacances does not ask for an account, does not collect personal data directly through forms, and does not sell user data. The site is made available openly so anyone can consult the calendars freely.",
+      noCollectionTitle: "We do not collect your personal data directly",
+      policyLead:
+        "No account, no direct personal data collection, and a site available to everyone.",
+      subtitle: "Use policy, transparency and essential information about the site",
+      title: "Use policy",
     },
     countdown: {
-      current: "Aktuell",
-      days: "Tage",
-      ended: "Beendet",
-      hours: "Stunden",
-      minutes: "Minuten",
-      past: "Vorbei",
-      remaining: "Verbleibend",
-      seconds: "Sekunden",
-      startsIn: "Beginn in",
-      upcoming: "Bevorstehend",
+      current: "Current",
+      days: "Days",
+      ended: "Ended",
+      hours: "Hours",
+      minutes: "Minutes",
+      past: "Past",
+      remaining: "Time left",
+      seconds: "Seconds",
+      startsIn: "Starts in",
+      upcoming: "Upcoming",
+    },
+    footer: {
+      api: "API",
+      code: "Code on GitHub",
+      copyright: "© 2026 Rinth, Inc.",
+      legal: "Legal",
+      madeWithPassion: "Made with passion for the community.",
+      policy: "Use policy",
+      reportIssues: "Report issues",
+      resources: "Resources",
+      rightsReserved: "All rights reserved.",
+      terms: "Terms of use",
     },
     common: {
-      allRightsReserved:
-        "ZoneVacances. Alle Rechte vorbehalten. Kalender und Schulzonen dienen nur zur Information.",
-      holiday: "Feiertag",
-      noData: "Keine Daten",
-      publicSources: "Offentliche Quellen",
-      search: "Suche",
-      tenYears: "10 Jahre",
-      unavailable: "Vorubergehend nicht verfugbar",
-    },
-  },
-  en: ENGLISH_DICTIONARY,
-  es: {
-    nav: {
-      allLanguages: "Todos los idiomas",
-      availableCountries: "Paises disponibles",
-      countries: "Paises",
-      home: "Inicio",
-      language: "Idioma",
-      selectLanguage: "Elegir idioma",
-    },
-    home: {
-      helper: "Todas las paginas de paises europeos estan disponibles desde el mapa y el menu.",
-      subtitle: "Mapa interactivo europeo de vacaciones escolares",
-      title: "Encuentra tus vacaciones",
-    },
-    countriesPage: {
-      openCountry: "Abrir pagina del pais",
-      subtitle: "Explora todas las paginas europeas disponibles.",
-      title: "Paises",
-    },
-    languagePage: {
-      auto: "La deteccion del idioma del navegador esta activada.",
-      current: "Idioma actual",
-      subtitle: "Elige cualquier idioma europeo compatible.",
-      title: "Idiomas",
-    },
-    countryPage: {
-      nextVacations: "Proximas vacaciones escolares",
-      noPublicHolidays: "No hay proximos festivos por ahora.",
-      noRemainingVacations: "No quedan mas vacaciones escolares este ano.",
-      noVacationData: "Los datos de vacaciones escolares no estan disponibles temporalmente.",
-      publicHolidays: "Festivos",
-      remainingVacations: "Vacaciones restantes del ano",
-      updatedAt: "Ultima sincronizacion",
-    },
-    countdown: {
-      current: "Actual",
-      days: "Dias",
-      ended: "Terminado",
-      hours: "Horas",
-      minutes: "Minutos",
-      past: "Pasado",
-      remaining: "Tiempo restante",
-      seconds: "Segundos",
-      startsIn: "Empieza en",
-      upcoming: "Proximo",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Todos los derechos reservados. Los calendarios y zonas escolares se ofrecen a titulo informativo.",
-      holiday: "Festivo",
-      noData: "Sin datos",
-      publicSources: "Fuentes publicas",
-      search: "Buscar",
-      tenYears: "10 anos",
-      unavailable: "Temporalmente no disponible",
+      holiday: "Public holiday",
+      noData: "No data",
+      search: "Search",
+      unavailable: "Temporarily unavailable",
     },
   },
   fr: {
     nav: {
-      allLanguages: "Toutes les langues",
+      allLanguages: "Langues",
       availableCountries: "Pays disponibles",
+      closeMenu: "Fermer le menu",
       countries: "Pays",
-      home: "Home",
+      home: "Accueil",
       language: "Langue",
+      openMenu: "Ouvrir le menu",
+      primaryNavigation: "Navigation principale",
       selectLanguage: "Choisir la langue",
     },
     home: {
-      helper: "Toutes les pages pays europe sont accessibles depuis la carte et le menu des pays.",
-      subtitle: "Carte interactive europeenne des vacances scolaires",
+      helper: "Choisis la France ou la Belgique sur la carte pour ouvrir le tableau de bord des vacances.",
+      mapAriaLabel: "Carte interactive de l'Europe",
+      subtitle: "Carte des vacances scolaires",
       title: "Trouve tes vacances",
     },
     countriesPage: {
-      openCountry: "Ouvrir la page pays",
-      subtitle: "Parcours toutes les pages pays disponibles en Europe.",
+      openCountry: "Ouvrir la page du pays",
+      subtitle: "Parcours les tableaux de bord France et Belgique.",
       title: "Pays",
     },
     languagePage: {
-      auto: "La detection de la langue du navigateur est activee.",
+      auto: "La langue du navigateur est detectee automatiquement.",
       current: "Langue actuelle",
-      subtitle: "Choisis n'importe quelle langue europeenne disponible.",
+      subtitle: "Choisis entre le francais, l'anglais et le polonais.",
       title: "Langues",
     },
     countryPage: {
+      belgiumMapLabel: "Carte detaillee de la Belgique par arrondissements scolaires et provinces",
+      franceMapLabel: "Carte detaillee de la France par regions scolaires",
       nextVacations: "Prochaines vacances",
       noPublicHolidays: "Aucun jour ferie a venir pour le moment.",
-      noRemainingVacations: "Aucune autre periode de vacances cette annee.",
+      noRemainingVacations: "Il ne reste plus de vacances scolaires cette annee.",
       noVacationData: "Les donnees de vacances scolaires sont temporairement indisponibles.",
+      otherVacations: "Autres vacances",
       publicHolidays: "Jours feries",
       remainingVacations: "Vacances restantes cette annee",
       updatedAt: "Derniere synchro",
+    },
+    legalPage: {
+      intro:
+        "Cette page accueillera les conditions d'utilisation detaillees de ZoneVacances. Elle reste separee de la politique d'utilisation pour garder chaque sujet bien distinct.",
+      placeholderText:
+        "Les regles completes d'utilisation, les responsabilites et les details pratiques seront ajoutes plus tard. En attendant, le site reste disponible a titre informatif, et les sources publiques officielles restent la reference pour les dates sensibles.",
+      placeholderTitle: "Page en preparation",
+      subtitle: "Les regles d'utilisation detaillees seront ajoutees ici plus tard",
+      title: "Conditions d'utilisation",
+    },
+    policyPage: {
+      analyticsText:
+        "Le site peut utiliser les statistiques Vercel pour consulter des informations d'audience anonymisees et agregees, comme le pays de visite, l'appareil, le navigateur ou le systeme d'exploitation. ZoneVacances ne cree aucun profil publicitaire.",
+      analyticsLinkLabel: "En savoir plus sur Vercel Analytics",
+      analyticsTitle: "Mesure d'audience",
+      noCollectionText:
+        "ZoneVacances ne demande pas de compte, ne collecte pas directement de donnees personnelles via des formulaires, et ne revend pas de donnees utilisateurs. Le site est mis a disposition librement pour permettre a tout le monde de consulter les calendriers.",
+      noCollectionTitle: "Nous ne collectons pas directement vos donnees personnelles",
+      policyLead:
+        "Pas de compte, pas de collecte directe de donnees personnelles, et un site ouvert a tout le monde.",
+      subtitle: "Politique d'utilisation, transparence et informations essentielles sur le site",
+      title: "Politique d'utilisation",
     },
     countdown: {
       current: "Actuellement",
@@ -316,514 +260,129 @@ const PARTIAL_DICTIONARIES: Record<string, Partial<Dictionary>> = {
       startsIn: "Debut dans",
       upcoming: "A venir",
     },
+    footer: {
+      api: "API",
+      code: "Code sur GitHub",
+      copyright: "© 2026 Rinth, Inc.",
+      legal: "Legal",
+      madeWithPassion: "Fait avec passion pour la communaute.",
+      policy: "Politique d'utilisation",
+      reportIssues: "Signaler un probleme",
+      resources: "Ressources",
+      rightsReserved: "Tous droits reserves.",
+      terms: "Conditions d'utilisation",
+    },
     common: {
-      allRightsReserved:
-        "ZoneVacances. Tous droits reserves. Calendriers et zones scolaires fournis a titre indicatif.",
       holiday: "Jour ferie",
       noData: "Aucune donnee",
-      publicSources: "Sources publiques",
       search: "Recherche",
-      tenYears: "10 ans",
       unavailable: "Temporairement indisponible",
-    },
-  },
-  it: {
-    nav: {
-      allLanguages: "Tutte le lingue",
-      availableCountries: "Paesi disponibili",
-      countries: "Paesi",
-      home: "Home",
-      language: "Lingua",
-      selectLanguage: "Scegli lingua",
-    },
-    home: {
-      helper: "Tutte le pagine dei paesi europei sono disponibili dalla mappa e dal menu.",
-      subtitle: "Mappa interattiva europea delle vacanze scolastiche",
-      title: "Trova le tue vacanze",
-    },
-    countriesPage: {
-      openCountry: "Apri la pagina del paese",
-      subtitle: "Esplora tutte le pagine dei paesi europei disponibili.",
-      title: "Paesi",
-    },
-    languagePage: {
-      auto: "Il rilevamento automatico della lingua del browser e attivo.",
-      current: "Lingua attuale",
-      subtitle: "Scegli qualsiasi lingua europea supportata.",
-      title: "Lingue",
-    },
-    countryPage: {
-      nextVacations: "Prossime vacanze scolastiche",
-      noPublicHolidays: "Nessuna prossima festivita al momento.",
-      noRemainingVacations: "Non restano altre vacanze scolastiche quest'anno.",
-      noVacationData: "I dati sulle vacanze scolastiche sono temporaneamente non disponibili.",
-      publicHolidays: "Festivita",
-      remainingVacations: "Vacanze restanti dell'anno",
-      updatedAt: "Ultimo aggiornamento",
-    },
-    countdown: {
-      current: "Attuale",
-      days: "Giorni",
-      ended: "Terminato",
-      hours: "Ore",
-      minutes: "Minuti",
-      past: "Passato",
-      remaining: "Tempo restante",
-      seconds: "Secondi",
-      startsIn: "Inizia tra",
-      upcoming: "In arrivo",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Tutti i diritti riservati. Calendari e zone scolastiche sono forniti a titolo informativo.",
-      holiday: "Festivita",
-      noData: "Nessun dato",
-      publicSources: "Fonti pubbliche",
-      search: "Ricerca",
-      tenYears: "10 anni",
-      unavailable: "Temporaneamente non disponibile",
-    },
-  },
-  nl: {
-    nav: {
-      allLanguages: "Alle talen",
-      availableCountries: "Beschikbare landen",
-      countries: "Landen",
-      home: "Home",
-      language: "Taal",
-      selectLanguage: "Taal kiezen",
-    },
-    home: {
-      helper: "Alle Europese landpagina's zijn beschikbaar via de kaart en het landenmenu.",
-      subtitle: "Interactieve Europese schoolvakantiekaart",
-      title: "Vind je vakanties",
-    },
-    countriesPage: {
-      openCountry: "Landpagina openen",
-      subtitle: "Bekijk alle beschikbare Europese landpagina's.",
-      title: "Landen",
-    },
-    languagePage: {
-      auto: "Browsertaaldetectie is ingeschakeld.",
-      current: "Huidige taal",
-      subtitle: "Kies elke ondersteunde Europese taal.",
-      title: "Talen",
-    },
-    countryPage: {
-      nextVacations: "Volgende schoolvakanties",
-      noPublicHolidays: "Op dit moment geen komende feestdagen.",
-      noRemainingVacations: "Er zijn dit jaar geen schoolvakanties meer over.",
-      noVacationData: "Schoolvakantiegegevens zijn tijdelijk niet beschikbaar.",
-      publicHolidays: "Feestdagen",
-      remainingVacations: "Resterende vakanties dit jaar",
-      updatedAt: "Laatste synchronisatie",
-    },
-    countdown: {
-      current: "Huidig",
-      days: "Dagen",
-      ended: "Voorbij",
-      hours: "Uren",
-      minutes: "Minuten",
-      past: "Afgelopen",
-      remaining: "Resterende tijd",
-      seconds: "Seconden",
-      startsIn: "Begint over",
-      upcoming: "Komend",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Alle rechten voorbehouden. Kalenders en schoolzones zijn alleen ter informatie.",
-      holiday: "Feestdag",
-      noData: "Geen gegevens",
-      publicSources: "Openbare bronnen",
-      search: "Zoeken",
-      tenYears: "10 jaar",
-      unavailable: "Tijdelijk niet beschikbaar",
     },
   },
   pl: {
     nav: {
-      allLanguages: "Wszystkie jezyki",
+      allLanguages: "Jezyki",
       availableCountries: "Dostepne kraje",
+      closeMenu: "Zamknij menu",
       countries: "Kraje",
-      home: "Home",
+      home: "Start",
       language: "Jezyk",
+      openMenu: "Otworz menu",
+      primaryNavigation: "Nawigacja glowna",
       selectLanguage: "Wybierz jezyk",
     },
     home: {
-      helper: "Wszystkie strony krajow europejskich sa dostepne z mapy i menu krajow.",
-      subtitle: "Interaktywna europejska mapa ferii szkolnych",
+      helper: "Wybierz Francje albo Belgie na mapie, aby otworzyc pulpit wakacji szkolnych.",
+      mapAriaLabel: "Interaktywna mapa Europy",
+      subtitle: "Mapa ferii szkolnych",
       title: "Znajdz swoje wakacje",
     },
     countriesPage: {
       openCountry: "Otworz strone kraju",
-      subtitle: "Przegladaj wszystkie dostepne strony krajow europejskich.",
+      subtitle: "Przegladaj pulpity Francji i Belgii.",
       title: "Kraje",
     },
     languagePage: {
-      auto: "Automatyczne wykrywanie jezyka przegladarki jest wlaczone.",
+      auto: "Jezyk przegladarki jest wykrywany automatycznie.",
       current: "Aktualny jezyk",
-      subtitle: "Wybierz dowolny obslugiwany jezyk europejski.",
+      subtitle: "Wybierz francuski, angielski albo polski.",
       title: "Jezyki",
     },
     countryPage: {
-      nextVacations: "Najblizsze ferie szkolne",
-      noPublicHolidays: "Brak zblizajacych sie swiat.",
-      noRemainingVacations: "W tym roku nie ma juz pozostalych ferii szkolnych.",
-      noVacationData: "Dane o feriach szkolnych sa tymczasowo niedostepne.",
-      publicHolidays: "Swieta",
-      remainingVacations: "Pozostale ferie w tym roku",
+      belgiumMapLabel: "Szczegolowa mapa Belgii wedlug okregow szkolnych i prowincji",
+      franceMapLabel: "Szczegolowa mapa Francji wedlug regionow szkolnych",
+      nextVacations: "Najblizsze ferie",
+      noPublicHolidays: "Brak nadchodzacych swiat panstwowych.",
+      noRemainingVacations: "W tym roku nie ma juz kolejnych przerw szkolnych.",
+      noVacationData: "Dane o feriach szkolnych sa chwilowo niedostepne.",
+      otherVacations: "Pozostale wakacje",
+      publicHolidays: "Swieta panstwowe",
+      remainingVacations: "Pozostale przerwy w tym roku",
       updatedAt: "Ostatnia synchronizacja",
     },
+    legalPage: {
+      intro:
+        "Na tej stronie zostana pozniej opublikowane szczegolowe warunki korzystania z ZoneVacances. Pozostaje ona oddzielona od polityki korzystania, aby kazdy temat byl jasny.",
+      placeholderText:
+        "Pelne zasady korzystania, odpowiedzialnosci i informacje praktyczne zostana dodane pozniej. Do tego czasu serwis ma charakter informacyjny, a w przypadku waznych dat nalezy opierac sie na oficjalnych zrodlach publicznych.",
+      placeholderTitle: "Strona w przygotowaniu",
+      subtitle: "Szczegolowe zasady korzystania zostana dodane tutaj pozniej",
+      title: "Warunki korzystania",
+    },
+    policyPage: {
+      analyticsText:
+        "Strona moze korzystac z analityki Vercel, aby przegladac zanonimizowane i zbiorcze informacje o ruchu, takie jak kraj odwiedzin, urzadzenie, przegladarka czy system operacyjny. ZoneVacances nie tworzy profilu reklamowego.",
+      analyticsLinkLabel: "Dowiedz sie wiecej o Vercel Analytics",
+      analyticsTitle: "Pomiar ruchu",
+      noCollectionText:
+        "ZoneVacances nie wymaga konta, nie zbiera bezposrednio danych osobowych przez formularze i nie sprzedaje danych uzytkownikow. Serwis jest dostepny otwarcie, aby kazdy mogl swobodnie sprawdzac kalendarze.",
+      noCollectionTitle: "Nie zbieramy bezposrednio Twoich danych osobowych",
+      policyLead:
+        "Bez konta, bez bezposredniego zbierania danych osobowych i z otwartym dostepem dla wszystkich.",
+      subtitle: "Polityka korzystania, przejrzystosc i najwazniejsze informacje o serwisie",
+      title: "Polityka korzystania",
+    },
     countdown: {
-      current: "Obecnie",
+      current: "Aktualnie",
       days: "Dni",
       ended: "Zakonczone",
       hours: "Godziny",
       minutes: "Minuty",
       past: "Minelo",
-      remaining: "Pozostaly czas",
+      remaining: "Pozostalo",
       seconds: "Sekundy",
-      startsIn: "Poczatek za",
-      upcoming: "Nadchodzace",
+      startsIn: "Start za",
+      upcoming: "Wkrotce",
+    },
+    footer: {
+      api: "API",
+      code: "Kod na GitHub",
+      copyright: "© 2026 Rinth, Inc.",
+      legal: "Legal",
+      madeWithPassion: "Stworzone z pasja dla spolecznosci.",
+      policy: "Polityka korzystania",
+      reportIssues: "Zglos problem",
+      resources: "Zasoby",
+      rightsReserved: "Wszelkie prawa zastrzezone.",
+      terms: "Warunki korzystania",
     },
     common: {
-      allRightsReserved:
-        "ZoneVacances. Wszelkie prawa zastrzezone. Kalendarze i strefy szkolne maja charakter informacyjny.",
       holiday: "Swieto",
       noData: "Brak danych",
-      publicSources: "Zrodla publiczne",
       search: "Szukaj",
-      tenYears: "10 lat",
       unavailable: "Tymczasowo niedostepne",
-    },
-  },
-  pt: {
-    nav: {
-      allLanguages: "Todas as linguas",
-      availableCountries: "Paises disponiveis",
-      countries: "Paises",
-      home: "Home",
-      language: "Idioma",
-      selectLanguage: "Escolher idioma",
-    },
-    home: {
-      helper: "Todas as paginas dos paises europeus estao disponiveis no mapa e no menu.",
-      subtitle: "Mapa interativo europeu das ferias escolares",
-      title: "Encontra as tuas ferias",
-    },
-    countriesPage: {
-      openCountry: "Abrir pagina do pais",
-      subtitle: "Explora todas as paginas europeias disponiveis.",
-      title: "Paises",
-    },
-    languagePage: {
-      auto: "A deteccao do idioma do navegador esta ativa.",
-      current: "Idioma atual",
-      subtitle: "Escolhe qualquer idioma europeu suportado.",
-      title: "Idiomas",
-    },
-    countryPage: {
-      nextVacations: "Proximas ferias escolares",
-      noPublicHolidays: "Sem proximos feriados por agora.",
-      noRemainingVacations: "Nao restam mais ferias escolares este ano.",
-      noVacationData: "Os dados de ferias escolares estao temporariamente indisponiveis.",
-      publicHolidays: "Feriados",
-      remainingVacations: "Ferias restantes este ano",
-      updatedAt: "Ultima sincronizacao",
-    },
-    countdown: {
-      current: "Atual",
-      days: "Dias",
-      ended: "Terminado",
-      hours: "Horas",
-      minutes: "Minutos",
-      past: "Passado",
-      remaining: "Tempo restante",
-      seconds: "Segundos",
-      startsIn: "Comeca em",
-      upcoming: "Proximo",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Todos os direitos reservados. Calendarios e zonas escolares sao fornecidos apenas para informacao.",
-      holiday: "Feriado",
-      noData: "Sem dados",
-      publicSources: "Fontes publicas",
-      search: "Pesquisar",
-      tenYears: "10 anos",
-      unavailable: "Temporariamente indisponivel",
-    },
-  },
-  ro: {
-    nav: {
-      allLanguages: "Toate limbile",
-      availableCountries: "Tari disponibile",
-      countries: "Tari",
-      home: "Home",
-      language: "Limba",
-      selectLanguage: "Alege limba",
-    },
-    home: {
-      helper: "Toate paginile tarilor europene sunt disponibile din harta si meniul tarilor.",
-      subtitle: "Harta interactiva europeana a vacantelor scolare",
-      title: "Gaseste-ti vacantele",
-    },
-    countriesPage: {
-      openCountry: "Deschide pagina tarii",
-      subtitle: "Exploreaza toate paginile europene disponibile.",
-      title: "Tari",
-    },
-    languagePage: {
-      auto: "Detectarea limbii browserului este activa.",
-      current: "Limba curenta",
-      subtitle: "Alege orice limba europeana acceptata.",
-      title: "Limbi",
-    },
-    countryPage: {
-      nextVacations: "Urmatoarele vacante scolare",
-      noPublicHolidays: "Nu exista sarbatori legale apropiate momentan.",
-      noRemainingVacations: "Nu mai exista vacante scolare ramase anul acesta.",
-      noVacationData: "Datele despre vacantele scolare sunt temporar indisponibile.",
-      publicHolidays: "Sarbatori legale",
-      remainingVacations: "Vacante ramase anul acesta",
-      updatedAt: "Ultima sincronizare",
-    },
-    countdown: {
-      current: "Actual",
-      days: "Zile",
-      ended: "Terminat",
-      hours: "Ore",
-      minutes: "Minute",
-      past: "Trecut",
-      remaining: "Timp ramas",
-      seconds: "Secunde",
-      startsIn: "Incepe in",
-      upcoming: "In curand",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Toate drepturile rezervate. Calendarele si zonele scolare sunt oferite doar informativ.",
-      holiday: "Sarbatoare legala",
-      noData: "Fara date",
-      publicSources: "Surse publice",
-      search: "Cautare",
-      tenYears: "10 ani",
-      unavailable: "Temporar indisponibil",
-    },
-  },
-  ru: {
-    nav: {
-      allLanguages: "Vse yazyki",
-      availableCountries: "Dostupnye strany",
-      countries: "Strany",
-      home: "Home",
-      language: "Yazyk",
-      selectLanguage: "Vybrat yazyk",
-    },
-    home: {
-      helper: "Vse stranitsy evropeyskikh stran dostupny s karty i iz menyu stran.",
-      subtitle: "Interaktivnaya evropeyskaya karta shkolnykh kanikul",
-      title: "Naydi svoi kanikuly",
-    },
-    countriesPage: {
-      openCountry: "Otkryt stranu strany",
-      subtitle: "Prosmatrivay vse dostupnye stranitsy evropeyskikh stran.",
-      title: "Strany",
-    },
-    languagePage: {
-      auto: "Opredelenie yazyka brauzera vklyucheno.",
-      current: "Tekushchiy yazyk",
-      subtitle: "Vyberi lyuboy podderzhivaemyy evropeyskiy yazyk.",
-      title: "Yazyki",
-    },
-    countryPage: {
-      nextVacations: "Blizhayshie shkolnye kanikuly",
-      noPublicHolidays: "Seychas net blizhayshikh prazdnikov.",
-      noRemainingVacations: "V etom godu bolshe net ostavshikhsya kanikul.",
-      noVacationData: "Dannye o shkolnykh kanikulakh vremenno nedostupny.",
-      publicHolidays: "Prazdniki",
-      remainingVacations: "Ostavshiesya kanikuly v etom godu",
-      updatedAt: "Poslednyaya sinhronizatsiya",
-    },
-    countdown: {
-      current: "Seichas",
-      days: "Dni",
-      ended: "Zaversheno",
-      hours: "Chasy",
-      minutes: "Minuty",
-      past: "Proshlo",
-      remaining: "Ostalos",
-      seconds: "Sekundy",
-      startsIn: "Nachnetsya cherez",
-      upcoming: "Skoro",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Vse prava zashchishcheny. Kalendari i shkolnye zony predostavlyayutsya v spravochnykh tselyakh.",
-      holiday: "Prazdnik",
-      noData: "Net dannykh",
-      publicSources: "Publichnye istochniki",
-      search: "Poisk",
-      tenYears: "10 let",
-      unavailable: "Vremenno nedostupno",
-    },
-  },
-  tr: {
-    nav: {
-      allLanguages: "Tum diller",
-      availableCountries: "Mevcut ulkeler",
-      countries: "Ulkeler",
-      home: "Home",
-      language: "Dil",
-      selectLanguage: "Dil sec",
-    },
-    home: {
-      helper: "Tum Avrupa ulke sayfalari harita ve ulkeler menusu uzerinden acilabilir.",
-      subtitle: "Etkilesimli Avrupa okul tatili haritasi",
-      title: "Tatilini bul",
-    },
-    countriesPage: {
-      openCountry: "Ulke sayfasini ac",
-      subtitle: "Tum mevcut Avrupa ulke sayfalarina goz at.",
-      title: "Ulkeler",
-    },
-    languagePage: {
-      auto: "Tarayici dil algilama acik.",
-      current: "Guncel dil",
-      subtitle: "Desteklenen herhangi bir Avrupa dilini sec.",
-      title: "Diller",
-    },
-    countryPage: {
-      nextVacations: "Sonraki okul tatilleri",
-      noPublicHolidays: "Su anda yaklasan resmi tatil yok.",
-      noRemainingVacations: "Bu yil kalan baska okul tatili yok.",
-      noVacationData: "Okul tatili verileri gecici olarak kullanilamiyor.",
-      publicHolidays: "Resmi tatiller",
-      remainingVacations: "Bu yil kalan tatiller",
-      updatedAt: "Son guncelleme",
-    },
-    countdown: {
-      current: "Su anda",
-      days: "Gun",
-      ended: "Bitti",
-      hours: "Saat",
-      minutes: "Dakika",
-      past: "Gecti",
-      remaining: "Kalan sure",
-      seconds: "Saniye",
-      startsIn: "Baslangica kalan",
-      upcoming: "Yaklasan",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Tum haklari saklidir. Takvimler ve okul bolgeleri yalnizca bilgilendirme amaclidir.",
-      holiday: "Resmi tatil",
-      noData: "Veri yok",
-      publicSources: "Acik kaynaklar",
-      search: "Ara",
-      tenYears: "10 yil",
-      unavailable: "Gecici olarak kullanilamiyor",
-    },
-  },
-  uk: {
-    nav: {
-      allLanguages: "Usi movy",
-      availableCountries: "Dostupni krainy",
-      countries: "Krainy",
-      home: "Home",
-      language: "Mova",
-      selectLanguage: "Obraty movu",
-    },
-    home: {
-      helper: "Usi storinky yevropeiskykh krain dostupni z karty ta menyu krain.",
-      subtitle: "Interaktyvna yevropeiska karta shkilnykh kanikul",
-      title: "Znaidy svoi kanikuly",
-    },
-    countriesPage: {
-      openCountry: "Vidkryty storinku krainy",
-      subtitle: "Perehlyadai vsi dostupni storinky yevropeiskykh krain.",
-      title: "Krainy",
-    },
-    languagePage: {
-      auto: "Avtomatychne vyznachennia movy brauzera aktyvne.",
-      current: "Potochna mova",
-      subtitle: "Obyrai bud-yaku pidtrymuvanu yevropeisku movu.",
-      title: "Movy",
-    },
-    countryPage: {
-      nextVacations: "Nastupni shkilni kanikuly",
-      noPublicHolidays: "Zaraz nemaie naiblyzhchykh sviat.",
-      noRemainingVacations: "Tsogo roku bilshe nemaie zalyshkovykh kanikul.",
-      noVacationData: "Dani pro shkilni kanikuly tymchasovo nedostupni.",
-      publicHolidays: "Sviatkovi dni",
-      remainingVacations: "Zalyshok kanikul tsogo roku",
-      updatedAt: "Ostannia synkhronizatsiia",
-    },
-    countdown: {
-      current: "Zaraz",
-      days: "Dni",
-      ended: "Zaversheno",
-      hours: "Hodyny",
-      minutes: "Khvylyny",
-      past: "Mynulo",
-      remaining: "Zalyshylosia",
-      seconds: "Sekundy",
-      startsIn: "Pochatok cherez",
-      upcoming: "Nezabarom",
-    },
-    common: {
-      allRightsReserved:
-        "ZoneVacances. Usi prava zakhyshcheni. Kalendarі ta shkilni zony nadani lyshe dlia informatsii.",
-      holiday: "Sviatkovyi den",
-      noData: "Nemaie danykh",
-      publicSources: "Publichni dzherela",
-      search: "Poshuk",
-      tenYears: "10 rokiv",
-      unavailable: "Tymchasovo nedostupno",
     },
   },
 };
 
-function mergeDictionary(base: Dictionary, partial?: Partial<Dictionary>): Dictionary {
-  if (!partial) {
-    return base;
-  }
-
-  return {
-    nav: {
-      ...base.nav,
-      ...partial.nav,
-    },
-    home: {
-      ...base.home,
-      ...partial.home,
-    },
-    countriesPage: {
-      ...base.countriesPage,
-      ...partial.countriesPage,
-    },
-    languagePage: {
-      ...base.languagePage,
-      ...partial.languagePage,
-    },
-    countryPage: {
-      ...base.countryPage,
-      ...partial.countryPage,
-    },
-    countdown: {
-      ...base.countdown,
-      ...partial.countdown,
-    },
-    common: {
-      ...base.common,
-      ...partial.common,
-    },
-  };
-}
+const LANGUAGE_NATIVE_LABELS: Record<AppLocale, string> = {
+  en: "English",
+  fr: "Francais",
+  pl: "Polski",
+};
 
 export function getDictionary(locale: AppLocale) {
-  return mergeDictionary(ENGLISH_DICTIONARY, PARTIAL_DICTIONARIES[locale]);
+  return DICTIONARIES[locale] ?? DICTIONARIES.fr;
 }
 
 export function getLocalizedCountryName(
@@ -843,19 +402,5 @@ export function getLocalizedCountryName(
 }
 
 export function getLanguageNativeLabel(locale: AppLocale) {
-  const staticLabel = LANGUAGE_NATIVE_LABELS[locale];
-
-  if (staticLabel) {
-    return staticLabel;
-  }
-
-  try {
-    const displayNames = new Intl.DisplayNames([locale], {
-      type: "language",
-    });
-
-    return displayNames.of(locale) ?? locale.toUpperCase();
-  } catch {
-    return locale.toUpperCase();
-  }
+  return LANGUAGE_NATIVE_LABELS[locale] ?? locale.toUpperCase();
 }

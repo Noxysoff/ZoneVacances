@@ -1,22 +1,30 @@
-function readEnvValue(key: string, fallback: string) {
+function readOptionalEnvValue(key: string, fallback: string) {
   const value = process.env[key]?.trim();
   return value && value.length > 0 ? value : fallback;
 }
 
+function readRequiredEnvValue(key: string) {
+  const value = process.env[key]?.trim();
+
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+
+  return value;
+}
+
 export const env = {
-  francePublicHolidaysBaseUrl: readEnvValue(
-    "FRANCE_PUBLIC_HOLIDAYS_BASE_URL",
-    "https://calendrier.api.gouv.fr/jours-feries",
-  ),
-  franceSchoolCalendarIcsBaseUrl: readEnvValue(
+  belgiumAddressApiBaseUrl: readRequiredEnvValue("BELGIUM_ADDRESS_API_BASE_URL"),
+  belgiumAddressApiSourceUrl: readRequiredEnvValue("BELGIUM_ADDRESS_API_SOURCE_URL"),
+  francePublicHolidaysBaseUrl: readRequiredEnvValue("FRANCE_PUBLIC_HOLIDAYS_BASE_URL"),
+  franceSchoolCalendarIcsBaseUrl: readRequiredEnvValue(
     "FRANCE_SCHOOL_CALENDAR_ICS_BASE_URL",
-    "https://fr.ftp.opendatasoft.com/openscol/fr-en-calendrier-scolaire",
   ),
-  geoApiBaseUrl: readEnvValue("GEO_API_BASE_URL", "https://geo.api.gouv.fr"),
-  nagerDateBaseUrl: readEnvValue("NAGER_DATE_BASE_URL", "https://date.nager.at/api/v3"),
-  openHolidaysBaseUrl: readEnvValue(
-    "OPEN_HOLIDAYS_BASE_URL",
-    "https://openholidaysapi.org",
-  ),
-  siteName: readEnvValue("NEXT_PUBLIC_SITE_NAME", "ZoneVacances"),
+  franceSchoolCalendarSourceUrl: readRequiredEnvValue("FRANCE_SCHOOL_CALENDAR_SOURCE_URL"),
+  francePublicHolidaysSourceUrl: readRequiredEnvValue("FRANCE_PUBLIC_HOLIDAYS_SOURCE_URL"),
+  geoApiBaseUrl: readRequiredEnvValue("GEO_API_BASE_URL"),
+  geoApiSourceUrl: readRequiredEnvValue("GEO_API_SOURCE_URL"),
+  openHolidaysBaseUrl: readRequiredEnvValue("OPEN_HOLIDAYS_BASE_URL"),
+  openHolidaysSourceUrl: readRequiredEnvValue("OPEN_HOLIDAYS_SOURCE_URL"),
+  siteName: readOptionalEnvValue("NEXT_PUBLIC_SITE_NAME", "ZoneVacances"),
 } as const;

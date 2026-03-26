@@ -8,13 +8,17 @@ import {
 } from "@/lib/locale";
 
 const LEGACY_ROUTE_MAP: Record<string, string> = {
-  "/10-ans": "/ten-years",
-  "/belgique": "/countries/belgium",
-  "/france": "/countries/france",
+  "/belgique": "/belgium",
+  "/countries/belgium": "/belgium",
+  "/countries/france": "/france",
+  "/france": "/france",
   "/recherche": "/search",
 };
 
 const LOCALE_PATTERN = new RegExp(`^\\/(${SUPPORTED_LOCALES.join("|")})$`);
+const LOCALIZED_LEGACY_COUNTRY_PATTERN = new RegExp(
+  `^\\/(${SUPPORTED_LOCALES.join("|")})\\/countries\\/(france|belgium)$`,
+);
 
 function shouldBypass(pathname: string) {
   return (
@@ -48,6 +52,13 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(
       new URL(withLocale(preferredLocale, `${matchedLegacyPath}${search}`), request.url),
     );
+  }
+
+  const localizedLegacyCountryMatch = pathname.match(LOCALIZED_LEGACY_COUNTRY_PATTERN);
+
+  if (localizedLegacyCountryMatch) {
+    const [, locale, country] = localizedLegacyCountryMatch;
+    return NextResponse.redirect(new URL(`/${locale}/${country}${search}`, request.url));
   }
 
   if (LOCALE_PATTERN.test(pathname)) {

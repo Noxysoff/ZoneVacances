@@ -1,5 +1,7 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { CountryDashboard } from "@/components/country/country-dashboard";
 import { getCountryDefinition } from "@/lib/countries";
+import { getCountryPageData } from "@/lib/dashboard-data";
 import { isLocale } from "@/lib/locale";
 import type { CountrySlug } from "@/lib/types";
 
@@ -17,5 +19,7 @@ export default async function CountryPage({
     notFound();
   }
 
-  redirect(`/${locale}/${countryDefinition.slug}`);
+  const data = await getCountryPageData(country as CountrySlug, locale);
+
+  return <CountryDashboard data={data} locale={locale} />;
 }

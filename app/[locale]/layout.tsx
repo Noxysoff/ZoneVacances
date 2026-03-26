@@ -36,8 +36,8 @@ export default async function LocaleLayout({
       />
       {children}
       <SiteFooter
-        legalLabel={dictionary.common.allRightsReserved}
-        sourcesLabel={dictionary.common.publicSources}
+        labels={dictionary.footer}
+        locale={locale as AppLocale}
       />
     </>
   );

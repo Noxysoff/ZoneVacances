@@ -1,4 +1,4 @@
-import { CountdownGrid } from "@/components/dashboard/countdown-grid";
+import { CountdownGrid } from "@/components/country/countdown-grid";
 import type { AppLocale, CountdownItem } from "@/lib/types";
 import { getDictionary } from "@/lib/i18n";
 
