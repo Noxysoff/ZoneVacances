@@ -224,12 +224,12 @@ const COUNTRY_ZONE_OVERRIDES: Record<
   },
   FR: {
     "FR-ZA": {
-      color: "#3b82f6",
-      glow: "rgba(59, 130, 246, 0.28)",
-    },
-    "FR-ZB": {
       color: "#ef4444",
       glow: "rgba(239, 68, 68, 0.28)",
+    },
+    "FR-ZB": {
+      color: "#3b82f6",
+      glow: "rgba(59, 130, 246, 0.28)",
     },
     "FR-ZC": {
       color: "#f59e0b",
